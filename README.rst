@@ -34,14 +34,22 @@ or
 Usage
 =============
 
+- Generate KPOINTS with *k*-mesh of 3 * 4 * 5
 
+ $ genk_fs -k 3 4 5
+
+or
+
+ $ genk_fs --kmesh 3 4 5
 
 =============
 License
 =============
+
 MIT LICENSE. See LICENSE file for more details.
 
 =============
 Author
 =============
+
 Yue-Wen FANG
