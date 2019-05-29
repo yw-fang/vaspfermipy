@@ -40,3 +40,8 @@ Usage
 License
 =============
 MIT LICENSE. See LICENSE file for more details.
+
+=============
+Author
+=============
+Yue-Wen FANG
