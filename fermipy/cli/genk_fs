@@ -1,0 +1,82 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Copyright (c) 2018, Yue-Wen FANG.
+License: MIT License (see LICENSE for details)
+"""
+
+__author__ = "Yue-Wen FANG"
+__maintainer__ = "Yue-Wen FANG"
+__email__ = "fyuewen@gmail.com"
+__status__ = "Development"
+__creation_date__ = "May 27th, 2019"
+
+"""
+Generate uniformly spaced k-points in a revised form of Monkhorst-Pack
+method for Fermi surface calculations in VASP.
+There are some differences between the k-points implemented here
+and that in the paper ``Special points for Brillonin-zone integrations'' by 
+H. J. Monkorst and J. D. Pack (1976):
+1) In the original Monkhorst-Pack method, odd/even grids
+include/don't include the zone center Gamma point. This is the one
+implemented in VASP source code. In our method, Gamma point is alwalys 
+included
+2) In the original Monkhorst-Pack method, 2*2*2 leads to 8 points in BZ.
+However, in our method, 2*2*2 have to use 3*3*3 = 27 points because we have to
+sample the points on the periodic boundary so that Xcrysden can read the corresponding
+eigenvalues successfully. 
+
+Usage: 
+[without installing the full package]: python genk_fs -k nkpx nkpy nkpz
+[after installation]: genk_fs -k nkpx nkpy nkpz
+
+Attention: In the VASP calculation, symmetry must be switched off completely
+by using ISYM=-1 in INCAR.
+"""
+
+import numpy as np
+from optparse import OptionParser
+
+######################Define a numpy array for storing the k-points#####################
+# The variables nkpx, nkpy, and nkpz are integer divisions along rec. lattice vectors for generating the mesh
+def genk(nkpx, nkpy, nkpz):
+    # define and initialize a numpy array named `kpt_array'
+    # the first three columns store coordinates of kpoints, the last column stores the symmetry weight-factor.
+    kpt_array = np.ones(shape=((nkpx+1)*(nkpy+1)*(nkpz+1), 4), dtype=float)
+    for i in range(nkpx+1):
+        for j in range(nkpy+1):
+            for k in range(nkpz+1):
+                kpt_array[i*(nkpy+1)*(nkpz+1)+j*(nkpz+1)+k,:-1] = [i*1.0/nkpx, j*1.0/nkpy, k*1.0/nkpz]
+    return(kpt_array)
+
+#################COMMAND LINE function######################
+def command_line_arg():
+    usage = "usage: %prog [options] arg1 arg2 arg3"
+    par = OptionParser(usage=usage)
+
+    par.add_option('-k', '--kmesh', nargs=3,
+            action='store', type="int", dest='kmesh',
+            default=(3, 3, 3),
+            help='specify the integer divisions along the three reciprocal lattice vectors')
+    return(par.parse_args())
+
+
+########Print the coordinates and weights to KPOINTS##########
+def write_kpoints(kpt_array, total_kpts):
+    with open('KPOINTS', mode='wt') as f:
+        f.write('K-points for Fermi surface\n')
+        f.write("{:6d}\n".format(total_kpts))
+        f.write('Reciprocal lattice\n')
+    with open('KPOINTS', mode='ba') as f:
+        np.savetxt(f, kpt_array, fmt='%15.14f')
+
+
+if __name__ == '__main__':
+    opts, args = command_line_arg()
+    nkpx, nkpy, nkpz = opts.kmesh[0], opts.kmesh[1], opts.kmesh[2]
+    total_kpts = (nkpx+1)*(nkpy+1)*(nkpz+1)
+#    print('nkpx = ', nkpx, 'nkpy = ', nkpy, 'nkpz = ', nkpz)
+    kpt_array = genk(nkpx, nkpy, nkpz)
+#    print(kpt_array)
+    write_kpoints(kpt_array, total_kpts)
+    print('KPOINTS has been written, please examine it before using')
