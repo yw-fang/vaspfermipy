@@ -1,4 +1,4 @@
-from fermipy import __version__
+from vaspfermipy import __version__
 import io
 import os
 try:
@@ -17,21 +17,21 @@ def readme():
 		return (f.read())
 
 
-setup(name='fermipy',
+setup(name='vaspfermipy',
 	  version='1.0.0',
 	  description='Toolset for Fermi surface calculations',
 	  long_description=long_description,
 	  long_description_content_type='text/x-rst',
 	  keywords='Fermi surface',
-	  url='https://github.com/yw-fang/fermipy',
+	  url='https://github.com/yw-fang/vaspfermipy',
 	  author='Yue-Wen FANG',
 	  author_email='fyuewen@gmail.com',
 	  license='MIT LICENSE',
-	  packages=['fermipy'],
+	  packages=['vaspfermipy'],
 	  install_requires=[
 	  ],
 	  test_suite='nose.collector',
 	  tests_require=['nose'],
-	  scripts=['fermipy/cli/genk_fs'],
+	  scripts=['vaspfermipy/cli/genk_fs'],
 	  include_package_data=True,
 	  zip_safe=False)
