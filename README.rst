@@ -14,17 +14,17 @@ only VASP is supported.
 Installation
 =============
 
-- Step 1: install fermipy to your virtual environment
+- Step 1: install vaspfermipy to your virtual environment
 
-To install fermipy, use
+To install vaspfermipy, use
 
- $ pip install fermipy
+ $ pip install vaspfermipy
 
 or
 
- $ git clone https://github.com/yw-fang/fermipy.git
+ $ git clone https://github.com/yw-fang/vaspfermipy.git
 
- $ cd fermipy
+ $ cd vaspfermipy
 
  $ python setup.py install
 
