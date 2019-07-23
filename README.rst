@@ -16,11 +16,7 @@ Installation
 
 - Step 1: install vaspfermipy to your virtual environment
 
-To install vaspfermipy, use
-
- $ pip install vaspfermipy
-
-or
+To install vaspfermipy
 
  $ git clone https://github.com/yw-fang/vaspfermipy.git
 
